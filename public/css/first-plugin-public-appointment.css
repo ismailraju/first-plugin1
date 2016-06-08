@@ -1,0 +1,44 @@
+.btn1 { 
+    background-color: yellow;
+}
+
+
+
+#buttons_1st_clm{
+
+/* width: 120px; */
+/* height: ; */
+
+}
+
+
+.clm_container{
+
+	 border:1px solid blue;
+	/* height:200px */
+/* 	display: inline-block; */
+
+}
+
+.clm_class{
+	border:1px solid red;
+	width: 90px; 
+
+	display: inline-block;
+ 	vertical-align: middle;
+
+
+}
+
+.single_button{
+	/* float:right; */
+  /*   background-color: #4CAF50; Green
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; */
+
+}

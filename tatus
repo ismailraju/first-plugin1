@@ -1,0 +1,97 @@
+[1mdiff --git a/admin/class-first-plugin-admin.php b/admin/class-first-plugin-admin.php[m
+[1mindex 27ff1a5..5803efe 100755[m
+[1m--- a/admin/class-first-plugin-admin.php[m
+[1m+++ b/admin/class-first-plugin-admin.php[m
+[36m@@ -98,6 +98,7 @@[m [mclass First_Plugin_Admin {[m
+ [m
+ 		////datatable show[m
+ 		wp_enqueue_style( $this->plugin_name.'jquery.dataTables.min.css', plugin_dir_url( __FILE__ ) . 'DataTables-1.10.11/media/css/jquery.dataTables.min.css', array(), $this->version, 'all' );[m
+[32m+[m		[32mwp_enqueue_style( $this->plugin_name.'buttons.dataTables.min.css', plugin_dir_url( __FILE__ ) . 'DataTables-1.10.11/extensions/Buttons/css/buttons.dataTables.min.css', array(), $this->version, 'all' );[m
+ [m
+ [m
+ [m
+[36m@@ -158,6 +159,8 @@[m [mclass First_Plugin_Admin {[m
+ 		////datatable show 		[m
+ 		wp_enqueue_script( $this->plugin_name.'jquery.dataTables.min.js', plugin_dir_url( __FILE__ ) . 'DataTables-1.10.11/media/js/jquery.dataTables.min.js', array( 'jquery' ), $this->version, true );[m
+ [m
+[32m+[m		[32mwp_enqueue_script( $this->plugin_name.'dataTables.buttons.min.js', plugin_dir_url( __FILE__ ) . 'DataTables-1.10.11/extensions/Buttons/js/dataTables.buttons.min.js', array( 'jquery' ), $this->version, true );[m
+[32m+[m
+ [m
+ [m
+ 	 [m
+[36m@@ -510,7 +513,7 @@[m [mfunction my_action_db_customer_info_callback() {[m
+ 		    //echo gettype($stuffName);[m
+ [m
+ 		    global $wpdb;[m
+[31m-  			$sql = "SELECT * FROM wp_ab_customers";[m
+[32m+[m[41m  [m			[32m$sql = "SELECT id, name, phone, email, notes FROM wp_ab_customers";[m
+   			$results = $wpdb->get_results($sql);[m
+   			echo json_encode($results);[m
+ 			wp_die();[m
+[1mdiff --git a/admin/js/first-plugin-customers.js b/admin/js/first-plugin-customers.js[m
+[1mindex 4ea769e..0404093 100755[m
+[1m--- a/admin/js/first-plugin-customers.js[m
+[1m+++ b/admin/js/first-plugin-customers.js[m
+[36m@@ -4,97 +4,91 @@[m
+ [m
+ 	jQuery(document).ready(function($) {[m
+ [m
+[32m+[m		[32m//readCustomerInfoFunction();[m
+[32m+[m[41m		[m
+ [m
+[32m+[m		[32m$('#table1').DataTable( {[m
+ [m
+[31m-/////////////////////////action function///////////////////////////////[m
+[32m+[m[32m        "ajax": {[m
+ [m
+[31m-function readCustomerInfoFunction() {[m
+[32m+[m[41m        [m	[32murl:ajax_object.ajax_url,[m
+[32m+[m			[32mtype:'POST',[m
+[32m+[m			[32m//dataType: "json",[m
+[32m+[m			[32m//dataType: "Array",[m
+[32m+[m			[32m"dataSrc": "",[m
+[32m+[m			[32mdata:{'action': 'my_action_customer_info'},[m
+[32m+[m[41m		[m
+[32m+[m[41m			[m
+ [m
+[31m-	console.log("addNewCustomerFunction()");[m
+[32m+[m[32m        },[m
+[32m+[m[32m        "columns": [[m
+[32m+[m[32m            { "data": "id" },[m
+[32m+[m[32m            { "data": "name" },[m
+[32m+[m[32m            { "data": "phone" },[m
+[32m+[m[32m            { "data": "email" },[m
+[32m+[m[32m            { "data": "notes" }[m
+[32m+[m[32m        ],[m
+[32m+[m[32m         dom: 'Bfrtip',[m
+[32m+[m[32m        buttons: [[m
+[32m+[m[32m            {[m
+[32m+[m[32m                text: 'New Customer',[m
+[32m+[m[32m                action: function ( e, dt, node, config ) {[m
+ [m
+[31m-	var data  = {[m
+[31m-		'action': 'my_action_customer_info'[m
+[32m+[m	[32m                 $("#email_id_error").hide();[m
+[32m+[m					[32m $("#email_id_input_error").hide();[m
+[32m+[m					[32m $("#customer_name_error").hide();[m
+[32m+[m					[32m $("#phn_number_error").hide();[m
+[32m+[m[41m					 [m
+[32m+[m[41m                [m	[32m$('#newCustomerModal').modal('show');//modals unshow[m
+[32m+[m[32m                    //alert( 'Button activated' );[m
+ [m
+[31m-	};[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m[32m        ][m
+ [m
+[32m+[m[32m    } );[m
+ [m
+ [m
+[31m-	$.ajax({[m
+[31m-		url:ajax_object.ajax_url,[m
+[31m-		type:'POST',[m
+[31m-		dataType: "json",[m
+[31m-		//dataType: "Array",[m
+[31m-		data:data,[m
+[31m-		success:function(response) {[m
+[31m-		
